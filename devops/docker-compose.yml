@@ -1,0 +1,68 @@
+version: '3.1'
+services:
+  casdoor:
+    restart: always
+    build:
+      context: ../casdoor
+      dockerfile: Dockerfile
+      target: STANDARD
+    entrypoint: /bin/sh -c './server --createDatabase=true'
+    ports:
+      - "8000:8000"
+    depends_on:
+      - db
+    environment:
+      RUNNING_IN_DOCKER: "true"
+    networks:
+      - crazytrau-net
+    volumes:
+      - ../casdoor/conf:/conf/
+
+  db:
+    restart: always
+    image: mysql:8.0.25
+    platform: linux/amd64
+    ports:
+      - "3306:3306"
+    environment:
+      MYSQL_ROOT_PASSWORD: 123456
+    volumes:
+      - /usr/local/docker/mysql:/var/lib/mysql
+    networks:
+      - crazytrau-net
+
+  backend-dev:
+    image: core-dev
+    container_name: backend-dev
+    build:
+      context: . # use same
+      dockerfile: Dockerfile.dev
+    volumes:
+      - '../backend:/home/app'
+    ports:
+      - 3817:3000
+    networks:
+      - crazytrau-net
+    command: -f /dev/null
+    entrypoint: /usr/bin/tail
+    tty: true
+
+  frontend-dev:
+    image: core-dev
+    container_name: frontend-dev
+    build:
+      context: . # use same
+      dockerfile: Dockerfile.dev
+    volumes:
+      - '../frontend:/home/app'
+    ports:
+      - 3816:3000
+    networks:
+      - crazytrau-net
+    command: -f /dev/null
+    entrypoint: /usr/bin/tail
+    tty: true
+
+networks:
+  crazytrau-net:
+    driver: bridge

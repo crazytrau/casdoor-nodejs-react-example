@@ -1,0 +1,3 @@
+[submodule "casdoor"]
+	path = casdoor
+	url = https://github.com/casdoor/casdoor.git
