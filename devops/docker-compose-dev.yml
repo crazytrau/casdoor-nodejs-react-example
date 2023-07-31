@@ -1,0 +1,74 @@
+version: '3.1'
+services:
+  casdoor:
+    restart: always
+    image: casbin/casdoor:latest
+    ports:
+      - "8000:8000"
+    depends_on:
+      - db
+    environment:
+      RUNNING_IN_DOCKER: "true"
+    networks:
+      - crt-casdoor-exam-net
+    volumes:
+      - ../casdoor/conf:/conf/
+
+  db:
+    restart: always
+    image: mysql:8.0.25
+    platform: linux/amd64
+    ports:
+      - "3306:3306"
+    environment:
+      MYSQL_ROOT_USER: root
+      MYSQL_ROOT_PASSWORD: 123456
+      MYSQL_DATABASE: casdoor
+      MYSQL_USER: root
+      MYSQL_PASSWORD: 123456
+    command: --init-file /data/application/init.sql
+    volumes:
+      - ../db/init.sql:/data/application/init.sql
+      - /usr/local/docker/mysql:/var/lib/mysql
+    networks:
+      - crt-casdoor-exam-net
+    healthcheck:
+      test: ["CMD", "mysqladmin" ,"ping", "-h", "localhost"]
+      timeout: 20s
+      retries: 10
+
+  backend-dev:
+    image: core-dev
+    container_name: backend-dev
+    build:
+      context: . # use same
+      dockerfile: Dockerfile.dev
+    volumes:
+      - '../backend:/home/app'
+    ports:
+      - 8080:8080
+    networks:
+      - crt-casdoor-exam-net
+    command: -f /dev/null
+    entrypoint: /usr/bin/tail
+    tty: true
+
+  frontend-dev:
+    image: core-dev
+    container_name: frontend-dev
+    build:
+      context: . # use same
+      dockerfile: Dockerfile.dev
+    volumes:
+      - '../frontend:/home/app'
+    ports:
+      - 9000:9000
+    networks:
+      - crt-casdoor-exam-net
+    command: -f /dev/null
+    entrypoint: /usr/bin/tail
+    tty: true
+
+networks:
+  crt-casdoor-exam-net:
+    driver: bridge

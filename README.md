@@ -1,10 +1,26 @@
+## Quick start
+
+```bash
+./start.sh
+```
+
+Config data
+
+## Develop
+
+```bash
+./start-dev.sh
+```
+
+---
+
 <h1 align="center" style="border-bottom: none;">Casdoor NodeJS React Example</h1>
 
 ## Demo
 
 *Password input is clipped out of the recording.*
 
-![react-express-illustration.gif](public/demo.gif)
+![react-express-illustration.gif](frontend/public/demo.gif)
 
 ## Architecture
 
@@ -105,3 +121,8 @@ Note that the port running frontend is set in `package.json`:
 `"start": "PORT=9000 react-scripts start"`
 
 Open [http://localhost:9000](http://localhost:9000) to view it in your browser.
+
+
+## Ref
+
+- https://github.com/crazytrau/casdoor-nodejs-react-example

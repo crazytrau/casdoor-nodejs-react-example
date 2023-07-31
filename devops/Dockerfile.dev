@@ -1,0 +1,6 @@
+FROM node:18.15.0
+
+ENV CONTAINER_PATH=/home/app
+WORKDIR $CONTAINER_PATH
+
+ENTRYPOINT sleep infinity
