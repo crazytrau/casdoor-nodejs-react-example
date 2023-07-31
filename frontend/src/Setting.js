@@ -1,7 +1,7 @@
 export const config = {
-  serverUrl: "https://door.casdoor.com",
-  clientId: "0ba528121ea87b3eb54d",
-  appName: "app-casbin-oa",
-  organizationName: "casbin",
+  serverUrl: "http://localhost:8000",
+  clientId: "c901ac858f5ea1b681d3",
+  appName: "crazytrau-chungtay",
+  organizationName: "crazytrau-org",
   redirectPath: "/callback", // in accordance with casdoor configuration
 };

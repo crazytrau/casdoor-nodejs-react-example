@@ -37,27 +37,37 @@ services:
       timeout: 20s
       retries: 10
 
-  crt-be:
-    image: crt-be
-    container_name: crt-be
+  backend-dev:
+    image: core-dev
+    container_name: backend-dev
     build:
-      context: ../backend
-      dockerfile: Dockerfile
+      context: . # use same
+      dockerfile: Dockerfile.dev
+    volumes:
+      - '../backend:/home/app'
     ports:
       - 8080:8080
     networks:
       - crt-casdoor-exam-net
+    command: -f /dev/null
+    entrypoint: /usr/bin/tail
+    tty: true
 
-  crt-fe:
-    image: crt-fe
-    container_name: crt-fe
+  frontend-dev:
+    image: core-dev
+    container_name: frontend-dev
     build:
-      context: ../frontend
-      dockerfile: Dockerfile
+      context: . # use same
+      dockerfile: Dockerfile.dev
+    volumes:
+      - '../frontend:/home/app'
     ports:
       - 9000:9000
     networks:
       - crt-casdoor-exam-net
+    command: -f /dev/null
+    entrypoint: /usr/bin/tail
+    tty: true
 
 networks:
   crt-casdoor-exam-net:
